@@ -64,18 +64,7 @@ bool RulesEngine::is_blackjack(const std::vector<Card>& hand)
     if (hand.size() > 2)
         return false;
 
-
-    bool has_ten = false;
-    for (auto& card: hand)
-    {
-
-        if (card.is_ten_card())
-        {
-            has_ten = true;
-        }
-    }
-
-    return has_ace(hand) && has_ten;
+    return has_ace(hand) && has_ten(hand);
 }
 
 bool RulesEngine::has_ace(const std::vector<Card>& hand)

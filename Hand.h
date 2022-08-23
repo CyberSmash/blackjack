@@ -11,8 +11,8 @@ using std::vector;
 class Hand {
 public:
     Hand();
-    Hand(const Card& c);
-    Hand(const vector<Card>& hand);
+    explicit Hand(const Card& c);
+    explicit Hand(const vector<Card>& hand);
     vector<Card> get_hand() const;
     void add_card(Card card);
 

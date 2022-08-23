@@ -132,7 +132,7 @@ bool Table::resolve_dealer()
  * @param player - The player object.
  * @return True of the player busts. False if they don't bust.
  */
-bool Table::resolve_player(std::unique_ptr<Player>& player)
+bool Table::resolve_player(const std::unique_ptr<Player>& player)
 {
     actions action = player->get_action(dealer, 0);
     std::cout << player->get_name() << " " << player->hand_to_str() << std::endl;
@@ -222,7 +222,7 @@ void Table::add_player(std::unique_ptr<Player> player)
     players.push_back(std::move(player));
 }
 
-bool Table::handle_bust(std::unique_ptr<Player>& player)
+bool Table::handle_bust(const std::unique_ptr<Player>& player)
 {
     bool player_busted = RulesEngine::is_player_busted(player->get_hand(0));
     if (player_busted)

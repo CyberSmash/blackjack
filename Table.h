@@ -35,7 +35,7 @@ public:
     void resolve_blackjacks();
 
     bool resolve_players();
-    bool resolve_player(std::unique_ptr<Player>& player);
+    bool resolve_player(const std::unique_ptr<Player>& player);
     bool resolve_dealer();
     void resolve_table();
 
@@ -44,7 +44,7 @@ public:
     virtual ~Table() = default;
 private:
 
-    bool handle_bust(std::unique_ptr<Player>& player);
+    bool handle_bust(const std::unique_ptr<Player>& player);
 
     std::vector<std::unique_ptr<Player>> players;
     Dealer dealer;

@@ -181,24 +181,24 @@ void Table::resolve_table()
         {
             player->player_win(player->get_current_bet() * 2);
         }
-        else if (!dealer.is_busted())
+        else if (dealer.is_busted())
         {
-            unsigned int player_hand_value = RulesEngine::HandValue(player->get_hand(0));
-            if (dealer_hand_value > player_hand_value)
-            {
-                player->player_lose();
+            continue;
+        }
 
-            }
-            else if (dealer_hand_value == player_hand_value)
-            {
-                player->player_push();
-            }
-            else if (dealer_hand_value < player_hand_value)
-            {
-                std::cout << player->get_name() << " wins $" << player->get_current_bet() << player_hand_value << " > " << dealer_hand_value << std::endl;
-                player->player_win(player->get_current_bet());
-            }
-
+        unsigned int player_hand_value = RulesEngine::HandValue(player->get_hand(0));
+        if (dealer_hand_value > player_hand_value)
+        {
+            player->player_lose();
+        }
+        else if (dealer_hand_value == player_hand_value)
+        {
+            player->player_push();
+        }
+        else
+        {
+            std::cout << player->get_name() << " wins $" << player->get_current_bet() << player_hand_value << " > " << dealer_hand_value << std::endl;
+            player->player_win(player->get_current_bet());
         }
     }
     state = table_state::game_over;

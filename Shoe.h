@@ -12,7 +12,7 @@
 
 class Shoe {
 public:
-    Shoe(int num_decks);
+    explicit Shoe(int num_decks);
 
     std::string print_shoe();
     void shuffle();

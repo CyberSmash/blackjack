@@ -8,14 +8,15 @@
 #include "RulesEngine.h"
 
 Player::Player(std::string  name,
-               double starting_bankroll, bool is_dealer) : name(std::move(name)), starting_bankroll(starting_bankroll), is_dealer(is_dealer)
+               double starting_bankroll, bool is_dealer) :
+        name(std::move(name)), starting_bankroll(starting_bankroll), is_dealer(is_dealer), hands(1)
 {
     current_bankroll = starting_bankroll;
 }
 
-void Player::add_card(const Card& card)
+void Player::add_card(const Card& card, unsigned int hand_num)
 {
-    hand.push_back(card);
+    hands[hand_num].push_back(card);
 }
 
 double Player::get_current_bet()
@@ -87,9 +88,9 @@ std::string Player::get_name()
 }
 
 
-std::vector<Card> Player::get_hand() const
+std::vector<Card> Player::get_hand(unsigned int hand_num) const
 {
-    return hand;
+    return hands[hand_num];
 }
 
 /**
@@ -98,9 +99,9 @@ std::vector<Card> Player::get_hand() const
  * @param dealer - The dealer object.
  * @return - An action to take.
  */
-actions Player::get_action(const Player& dealer)
+actions Player::get_action(const Player& dealer, unsigned int hand_num)
 {
-    int current_hand_value = RulesEngine::HandValue(hand);
+    int current_hand_value = RulesEngine::HandValue(hands[hand_num]);
 
     if (current_hand_value == 11 && can_increase_bet(current_bet))
     {
@@ -114,7 +115,8 @@ actions Player::get_action(const Player& dealer)
         return actions::stand;
     }
 
-    int dealer_value = RulesEngine::HandValue(dealer.get_hand());
+    // Dealers only ever have one hand.
+    int dealer_value = RulesEngine::HandValue(dealer.get_hand(0));
     // Assume the dealer has a 10.
     dealer_value += 10;
 
@@ -129,10 +131,16 @@ actions Player::get_action(const Player& dealer)
 std::string Player::hand_to_str()
 {
     std::stringstream ss;
-    for (auto& c : get_hand())
+    for (unsigned int hand_num = 0; hand_num < num_hands(); hand_num++)
     {
-        ss << c << " ";
+        ss << hand_num << ": ";
+        for (auto& c : get_hand(hand_num))
+        {
+            ss << c << " ";
+        }
+        ss << std::endl;
     }
+
     return ss.str();
 }
 
@@ -146,4 +154,9 @@ void Player::double_down()
 {
     current_bankroll -= current_bet;
     current_bet *= 2;
+}
+
+unsigned int Player::num_hands()
+{
+    return hands.size();
 }

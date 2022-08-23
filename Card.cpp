@@ -68,7 +68,7 @@ SUIT Card::get_suit() const
 
 std::ostream & operator<<(std::ostream&os, const Card& card)
 {
-    os << card.to_string();
+    os << "\x1b[31m" << card.to_string() << "\x1b[00m";
     return os;
 }
 bool Card::is_ten_card() const

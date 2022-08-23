@@ -4,9 +4,10 @@ Dealer::Dealer() : Player("Dealer", 0, true)
 {
 }
 
-actions Dealer::get_action(const Player &dealer)
+actions Dealer::get_action(const Player &dealer, unsigned int hand_num)
 {
-    int hand_value = RulesEngine::HandValue(hand);
+    // The dealer only ever has one hand.
+    int hand_value = RulesEngine::HandValue(hands[0]);
     if (hand_value < 17)
     {
         return actions::hit;
@@ -17,5 +18,15 @@ actions Dealer::get_action(const Player &dealer)
 std::vector<Card> Dealer::get_obfuscated_hand() const
 {
     // Return only the first dealt card.
-    return {hand.begin(), hand.begin() + 1};
+    return {hands[0].begin(), hands[0].begin() + 1};
+}
+
+unsigned int Dealer::num_hands()
+{
+    return 1;
+}
+
+std::vector<Card> Dealer::get_hand()
+{
+    return hands[0];
 }

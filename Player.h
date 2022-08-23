@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "Card.h"
+#include "Hand.h"
 
 enum class actions {
     hit,
@@ -19,7 +20,7 @@ class Player {
 
 public:
     Player(std::string  name, double starting_bankroll, bool is_dealer = false);
-    void add_card(const Card& card);
+    void add_card(const Card& card, unsigned int hand_num);
     virtual double get_bet(double minimum);
     std::string get_name();
     double get_current_bet();
@@ -33,9 +34,9 @@ public:
 
     virtual void reset_player();
     std::string hand_to_str();
-
-    virtual std::vector<Card> get_hand() const;
-    virtual actions get_action(const Player& dealer);
+    virtual unsigned int num_hands();
+    virtual std::vector<Card> get_hand(unsigned int hand_num) const;
+    virtual actions get_action(const Player& dealer, unsigned int hand_num);
     virtual ~Player() = default;
 
 
@@ -45,7 +46,7 @@ protected:
     std::string name;
     double starting_bankroll;
     double current_bankroll;
-    std::vector<Card> hand;
+    std::vector<Hand> hands;
     bool is_dealer = false;
     double current_bet = 0;
     bool busted = false;

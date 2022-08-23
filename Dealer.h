@@ -11,9 +11,10 @@
 class Dealer : public Player {
 public:
     Dealer();
-    actions get_action(const Player &dealer) override;
+    actions get_action(const Player &dealer, unsigned int hand_num) override;
     std::vector<Card> get_obfuscated_hand() const;
-
+    unsigned int num_hands() override;
+    std::vector<Card> get_hand();
 
     ~Dealer() override = default;
 protected:

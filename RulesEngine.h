@@ -12,6 +12,7 @@ public:
     static bool is_blackjack(const std::vector<Card>& hand);
     static bool has_ace(const std::vector<Card>& hand);
     static bool is_hard(const std::vector<Card>& hand);
+    static bool has_ten(const std::vector<Card>& hand);
 };
 
 

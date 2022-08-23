@@ -63,10 +63,11 @@ void Table::deal()
             if (p->get_current_bet() == 0)
                 continue;
 
-            p->add_card(shoe->deal());
+            // Dealing always deals to the players first hand.
+            p->add_card(shoe->deal(), 0);
         }
 
-        dealer.add_card(shoe->deal());
+        dealer.add_card(shoe->deal(), 0);
     }
 
 
@@ -95,14 +96,14 @@ bool Table::resolve_players()
 
 bool Table::resolve_dealer()
 {
-    actions action = dealer.get_action(dealer);
-    std::cout << "Dealer reveals hand: " << dealer.hand_to_str() << std::endl;
+    actions action = dealer.get_action(dealer, 0);
+    std::cout << "Dealer reveals hands: " << dealer.hand_to_str() << std::endl;
     unsigned int hand_total = RulesEngine::HandValue(dealer.get_hand());
     while (action != actions::stand)
     {
         if (action == actions::hit)
         {
-            dealer.add_card(shoe->deal());
+            dealer.add_card(shoe->deal(), 0);
             std::cout << dealer.get_name() << " gets a " << dealer.get_hand().back() << std::endl;
             hand_total = RulesEngine::HandValue(dealer.get_hand());
             bool is_busted = RulesEngine::is_player_busted(dealer.get_hand());
@@ -114,7 +115,7 @@ bool Table::resolve_dealer()
             }
             std::cout << dealer.get_name() << " has a total of " << hand_total << std::endl;
         }
-        action = dealer.get_action(dealer);
+        action = dealer.get_action(dealer, 0);
     }
 
     if (action == actions::stand)
@@ -133,15 +134,15 @@ bool Table::resolve_dealer()
  */
 bool Table::resolve_player(std::unique_ptr<Player>& player)
 {
-    actions action = player->get_action(dealer);
+    actions action = player->get_action(dealer, 0);
     std::cout << player->get_name() << " " << player->hand_to_str() << std::endl;
 
     if (action == actions::double_down)
     {
-        player->add_card(shoe->deal());
+        player->add_card(shoe->deal(), 0);
         std::cout << player->get_name() << " doubles down ... " << std::endl;
-        std::cout << player->get_name() << " gets " << player->get_hand().back() << std::endl;
-        std::cout << player->get_name() << " has a total of " << RulesEngine::HandValue(player->get_hand()) << std::endl;
+        std::cout << player->get_name() << " gets " << player->get_hand(0).back() << std::endl;
+        std::cout << player->get_name() << " has a total of " << RulesEngine::HandValue(player->get_hand(0)) << std::endl;
 
         return handle_bust(player);
     }
@@ -149,20 +150,20 @@ bool Table::resolve_player(std::unique_ptr<Player>& player)
     while(action == actions::hit)
     {
 
-        player->add_card(shoe->deal());
+        player->add_card(shoe->deal(), 0);
         std::cout << player->get_name() << " hits ... " << std::endl;
-        std::cout << player->get_name() << " gets " << player->get_hand().back() << std::endl;
+        std::cout << player->get_name() << " gets " << player->get_hand(0).back() << std::endl;
         std::cout << player->get_name() << " " << player->hand_to_str() << std::endl;
         std::cout << player->get_name() << " has a total of: "
-                  << RulesEngine::HandValue(player->get_hand()) << std::endl;
-        std::cout << player->get_name() << " has " << RulesEngine::HandValue(player->get_hand()) << std::endl;
+                  << RulesEngine::HandValue(player->get_hand(0)) << std::endl;
+        std::cout << player->get_name() << " has " << RulesEngine::HandValue(player->get_hand(0)) << std::endl;
         bool player_busted = handle_bust(player);
         if (player_busted)
             return true;
 
-        action = player->get_action(dealer);
+        action = player->get_action(dealer, 0);
     }
-    std::cout << player->get_name() << " stands with " << RulesEngine::HandValue(player->get_hand()) << std::endl;
+    std::cout << player->get_name() << " stands with " << RulesEngine::HandValue(player->get_hand(0)) << std::endl;
     state = table_state::resolve_dealer;
     return false;
 }
@@ -182,7 +183,7 @@ void Table::resolve_table()
         }
         else if (!dealer.is_busted())
         {
-            unsigned int player_hand_value = RulesEngine::HandValue(player->get_hand());
+            unsigned int player_hand_value = RulesEngine::HandValue(player->get_hand(0));
             if (dealer_hand_value > player_hand_value)
             {
                 player->player_lose();
@@ -207,7 +208,7 @@ void Table::resolve_blackjacks()
 {
     for (auto& player: players)
     {
-        if (RulesEngine::is_blackjack(player->get_hand()))
+        if (RulesEngine::is_blackjack(player->get_hand(0)))
         {
             std::cout << player->get_name() << " has a natural blackjack and wins " << player->get_current_bet() * 1.5 << std::endl;
             player->player_win(player->get_current_bet() + (player->get_current_bet() * RulesEngine::blackjack_payout_multiplier));
@@ -223,7 +224,7 @@ void Table::add_player(std::unique_ptr<Player> player)
 
 bool Table::handle_bust(std::unique_ptr<Player>& player)
 {
-    bool player_busted = RulesEngine::is_player_busted(player->get_hand());
+    bool player_busted = RulesEngine::is_player_busted(player->get_hand(0));
     if (player_busted)
         player->player_bust();
     return player_busted;

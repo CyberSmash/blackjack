@@ -80,28 +80,28 @@ bool RulesEngine::is_blackjack(const std::vector<Card>& hand)
 
 bool RulesEngine::has_ace(const std::vector<Card>& hand)
 {
-    return std::ranges::any_of(hand, [](const Card& c) {
+    return std::any_of(hand.begin(), hand.end(), [](const Card& c) {
         return c.is_ace();
     });
 }
 
 bool RulesEngine::has_ten(const std::vector<Card>& hand)
 {
-    return std::ranges::any_of(hand, [](const Card& c){
+    return std::any_of(hand.begin(), hand.end(), [](const Card& c){
         return c.is_ten_card();
     });
 }
 
 /**
- * Determines if the hand's value is "hard" or not.
+ * Determines if the hands's value is "hard" or not.
  *
- * A hand's value is "hard" if there is no ace. This function
+ * A hands's value is "hard" if there is no ace. This function
  * DOES NOT take into account the the situation where and
  * ace exists, but is being treated as a 1.
  *
  *
- * @param hand - The hand to search.
- * @return True if there is no ace in the hand. False otherwise.
+ * @param hand - The hands to search.
+ * @return True if there is no ace in the hands. False otherwise.
  */
 bool RulesEngine::is_hard(const std::vector<Card>& hand)
 {

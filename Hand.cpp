@@ -10,7 +10,7 @@ Hand::Hand()
 }
 Hand::Hand(const vector<Card>& h)
 {
-    for (auto &c: h) hand.push_back(c);
+    std::copy(std::begin(h), std::end(h), std::back_inserter(hand));
 }
 
 Hand::Hand(const Card& c)

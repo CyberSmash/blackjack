@@ -18,4 +18,14 @@ Hand::Hand(const Card& c)
     hand.push_back(c);
 }
 
+vector<Card> Hand::get_hand() const
+{
+    return hand;
+}
+
+void Hand::add_card(Card card)
+{
+    hand.push_back(card);
+}
+
 

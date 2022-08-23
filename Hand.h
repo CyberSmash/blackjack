@@ -13,6 +13,9 @@ public:
     Hand();
     Hand(const Card& c);
     Hand(const vector<Card>& hand);
+    vector<Card> get_hand() const;
+    void add_card(Card card);
+
 protected:
     vector<Card> hand;
 private:

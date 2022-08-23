@@ -16,7 +16,7 @@ Player::Player(std::string  name,
 
 void Player::add_card(const Card& card, unsigned int hand_num)
 {
-    hands[hand_num].push_back(card);
+    hands[hand_num].add_card(card);
 }
 
 double Player::get_current_bet()
@@ -90,7 +90,7 @@ std::string Player::get_name()
 
 std::vector<Card> Player::get_hand(unsigned int hand_num) const
 {
-    return hands[hand_num];
+    return hands[hand_num].get_hand();
 }
 
 /**
@@ -101,7 +101,7 @@ std::vector<Card> Player::get_hand(unsigned int hand_num) const
  */
 actions Player::get_action(const Player& dealer, unsigned int hand_num)
 {
-    int current_hand_value = RulesEngine::HandValue(hands[hand_num]);
+    int current_hand_value = RulesEngine::HandValue(get_hand(0));
 
     if (current_hand_value == 11 && can_increase_bet(current_bet))
     {

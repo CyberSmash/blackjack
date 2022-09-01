@@ -93,6 +93,11 @@ std::vector<Card> Player::get_hand(unsigned int hand_num) const
     return hands[hand_num].get_hand();
 }
 
+Hand& Player::get_hand_obj(unsigned int hand_num)
+{
+    return hands[hand_num];
+}
+
 /**
  * A really dumb player, always tries to beat the dealer, assuming the dealer
  * has a 10 in his hidden card.
@@ -141,6 +146,7 @@ std::string Player::hand_to_str()
         ss << std::endl;
     }
 
+
     return ss.str();
 }
 
@@ -159,4 +165,9 @@ void Player::double_down()
 unsigned int Player::num_hands()
 {
     return hands.size();
+}
+
+std::ostream &operator<<(std::ostream os, const Player &player)
+{
+
 }

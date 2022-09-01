@@ -73,9 +73,13 @@ void Table::deal()
 
     for (auto& player: players)
     {
-        std::cout << std::left << std::setw(10) << player->get_name() << " | "
-        << std::setw(20) << player->hand_to_str() << " | "
-        << std::setw(5) << player->get_current_bet() << std::endl;
+        for (int i = 0; i < player->num_hands(); i++)
+        {
+            std::cout << std::left << std::setw(10) << player->get_name() << " | "
+                      << std::setw(20) << player->get_hand_obj(i) << " | "
+                      << std::setw(5) << player->get_current_bet() << std::endl;
+        }
+
     }
     std::cout << std::left << std::setw(10) << dealer.get_name() << " | " <<
     dealer.hand_to_str() << " | " << std::endl;

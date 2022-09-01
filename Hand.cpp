@@ -28,4 +28,14 @@ void Hand::add_card(Card card)
     hand.push_back(card);
 }
 
+std::ostream &operator<<(std::ostream &os, const Hand &hand)
+{
+    for (const auto& card : hand.hand)
+    {
+        os << card << " ";
+    }
+
+    return os;
+}
+
 

@@ -32,13 +32,17 @@ public:
     void player_push();
     bool is_busted();
 
+
     virtual void reset_player();
     std::string hand_to_str();
     virtual unsigned int num_hands();
     virtual std::vector<Card> get_hand(unsigned int hand_num) const;
     virtual actions get_action(const Player& dealer, unsigned int hand_num);
+    Hand& get_hand_obj(unsigned int hand_num);
     virtual ~Player() = default;
 
+
+    friend std::ostream & operator<<(std::ostream os, const Player& player);
 
 protected:
     void double_down();

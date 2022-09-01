@@ -15,6 +15,8 @@ public:
     explicit Hand(const vector<Card>& hand);
     vector<Card> get_hand() const;
     void add_card(Card card);
+    friend std::ostream & operator<<(std::ostream&os, const Hand& hand);
+
 
 protected:
     vector<Card> hand;

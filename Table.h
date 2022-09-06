@@ -41,7 +41,10 @@ public:
 
     table_state get_state();
 
+    void print_players() const;
+
     virtual ~Table() = default;
+
 private:
 
     bool handle_bust(const std::unique_ptr<Player>& player);

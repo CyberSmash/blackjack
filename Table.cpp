@@ -73,12 +73,7 @@ void Table::deal()
 
     for (auto& player: players)
     {
-        for (int i = 0; i < player->num_hands(); i++)
-        {
-            std::cout << std::left << std::setw(10) << player->get_name() << " | "
-                      << std::setw(20) << player->get_hand_obj(i) << " | "
-                      << std::setw(5) << player->get_current_bet() << std::endl;
-        }
+        std::cout << player << std::endl;
 
     }
     std::cout << std::left << std::setw(10) << dealer.get_name() << " | " <<
@@ -177,17 +172,14 @@ void Table::resolve_table()
     unsigned int dealer_hand_value = RulesEngine::HandValue(dealer.get_hand());
     for (auto& player: players)
     {
-        // Ignore all players who's play has already been resolved.
+        // Ignore all players whose play has already been resolved.
         if (player->is_busted() || player->get_current_bet() == 0)
             continue;
+
 
         if (dealer.is_busted())
         {
             player->player_win(player->get_current_bet() * 2);
-        }
-        else if (dealer.is_busted())
-        {
-            continue;
         }
 
         unsigned int player_hand_value = RulesEngine::HandValue(player->get_hand(0));
@@ -202,7 +194,7 @@ void Table::resolve_table()
         else
         {
             std::cout << player->get_name() << " wins $" << player->get_current_bet() << player_hand_value << " > " << dealer_hand_value << std::endl;
-            player->player_win(player->get_current_bet());
+            player->player_win(player->get_current_bet() * 2);
         }
     }
     state = table_state::game_over;
@@ -239,3 +231,10 @@ Table::table_state Table::get_state()
     return state;
 }
 
+void Table::print_players() const
+{
+    for (const auto& player : players)
+    {
+        std::cout << player << std::endl;
+    }
+}

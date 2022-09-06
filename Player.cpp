@@ -5,6 +5,7 @@
 #include "Player.h"
 #include <utility>
 #include <sstream>
+#include <iomanip>
 #include "RulesEngine.h"
 
 Player::Player(std::string  name,
@@ -167,7 +168,20 @@ unsigned int Player::num_hands()
     return hands.size();
 }
 
-std::ostream &operator<<(std::ostream os, const Player &player)
+std::ostream &operator<<(std::ostream& os, const std::unique_ptr<Player>& player)
 {
+    for (int i = 0; i < player->num_hands(); i++)
+    {
+        os  << std::setw(10) << std::left << player->get_name() << " | "
+            << std::setw(40) << std::left << player->get_hand_obj(i) << " | "
+            << std::setw(5) << player->get_current_bet() << "| "
+            << player->current_bankroll;
+    }
 
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Player& player)
+{
+    return os << "abcd";
 }

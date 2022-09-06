@@ -42,7 +42,9 @@ public:
     virtual ~Player() = default;
 
 
-    friend std::ostream & operator<<(std::ostream os, const Player& player);
+    friend std::ostream &operator<<(std::ostream& os, const std::unique_ptr<Player>& player);
+    friend std::ostream &operator<<(std::ostream& os, const Player& player);
+
 
 protected:
     void double_down();

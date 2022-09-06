@@ -19,6 +19,9 @@ int main() {
     {
         table.step();
     }
+
+    table.print_players();
+
     return 0;
 
 }
